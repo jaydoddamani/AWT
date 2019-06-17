@@ -288,7 +288,7 @@
 	}
 }
 	</style>
-	<script src="Stats.js"></script>
+<script src="Stats.js"></script>
 <script src="requestanimationframe.polyfill.js"></script>
 <script src="sphere.js"></script>
 <script type="text/javascript">
@@ -326,12 +326,15 @@
 		go();
 	}
 </script>
-	<script type="text/javascript" src="plugins/d3/d3.js"></script>
-	<script type="text/javascript" src="plugins/d3/sankey.js"></script>
-	<script type="text/javascript" src="plugins/d3/d3.chart.js"></script>
-	<script type="text/javascript" src="plugins/ng-knob/ng-knob.js"></script>
-	<script type="text/javascript" src="plugins/d3/topojson.v1.min.js"></script>
-	<script type="text/javascript" src="plugins/d3/queue.v1.min.js"></script>
+		<script type="text/javascript" src="plugins/d3/d3.js"></script>
+        <script type="text/javascript" src="plugins/d3/sankey.js"></script>
+        <script type="text/javascript" src="plugins/d3/d3.chart.js"></script>
+        <script type="text/javascript" src="plugins/ng-knob/ng-knob.js"></script>
+        <script type="text/javascript" src="plugins/d3/topojson.v1.min.js"></script>
+        <script type="text/javascript" src="plugins/d3/queue.v1.min.js"></script>
+
+
+
 </head>
 <body onload="run()">
 	<div class="fixed-header">
@@ -345,7 +348,7 @@
 		</div>
     </div>
 
-<div class="container">
+	<div class="container">
 		<div class="row">
 		  	<div class="col-2">
 				<div class="ltable">
@@ -434,17 +437,17 @@
 			<!-- ----------------------------------RightTable------------------------- -->
 			</div>
 		</div>
-</div>
+	</div>
 <script>
-var header = document.getElementById("myDIV1");
-var btns = header.getElementsByClassName("button1");
-for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener("click", function() {
-  var current = document.getElementsByClassName("active");
-  if (current.length > 0) { 
-    current[0].className = current[0].className.replace(" active", "");
-  }
-  this.className += " active";
+	var header = document.getElementById("myDIV1");
+	var btns = header.getElementsByClassName("button1");
+	for (var i = 0; i < btns.length; i++) {
+  		btns[i].addEventListener("click", function() {
+  		var current = document.getElementsByClassName("active");
+ 		if (current.length > 0) { 
+    		current[0].className = current[0].className.replace(" active", "");
+  		}
+  		this.className += " active";
   });
 }
 </script>

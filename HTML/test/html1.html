@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>welcome</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<script type="text/javascript" src="plugins/d3/d3.js"></script>
+        <script type="text/javascript" src="plugins/d3/sankey.js"></script>
+        <script type="text/javascript" src="plugins/d3/d3.chart.js"></script>
+        <!-- <script type="text/javascript" src="plugins/ng-knob/ng-knob.js"></script> -->
+        <script type="text/javascript" src="plugins/d3/topojson.v1.min.js"></script>
+        <script type="text/javascript" src="plugins/d3/queue.v1.min.js"></script>	
+</head>
+<body>
+    <script>
+    angular.module('alwaysonApp').controller('MainCtrl', function ($rootScope, $scope, $timeout, $modal, $location, dataService, authService) {
+        
+        $scope.setupGlobe = function () {
+
+        var h = angular.element('.msglobe').height();
+        var w = angular.element('.msglobe').width();
+        
+        angular.element('.mapbg').css('height', h);
+        angular.element('.mapbg').css('width', h);
+
+        var width = w,
+                height = h,
+                sens = 0.25,
+                focused;
+
+        //Setting projection
+
+        var projection = d3.geo.orthographic()
+                .scale(200)
+                .rotate([0, 0])
+                .translate([width / 2, height / 2])
+                .clipAngle(90);
+
+        var path = d3.geo.path()
+                .projection(projection);
+
+        //SVG container
+
+        var svg = d3.select(".msglobe").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+        //Adding water
+
+        svg.append("path")
+                .datum({type: "Sphere"})
+                .attr("class", "water")
+                .attr("d", path);
+
+        var countryTooltip = d3.select(".msglobe").append("div").attr("class", "countryTooltip"),
+                countryList = d3.select(".msglobe").append("select").attr("name", "countries").attr("id", "d3-countries");
+
+
+        queue()
+                .defer(d3.json, "world-110m.json")
+                .defer(d3.json, "world-110m-country-names.json")
+                .await(ready);
+
+        //Main function
+
+        function ready(error, world, countryData) {
+
+            var countryById = {},
+                    countries = topojson.feature(world, world.objects.countries).features;
+
+            //Adding countries to select
+
+            countryData.forEach(function (d) {
+                countryById[d.id] = d.name;
+                var option = countryList.append("option");
+                option.text(d.name);
+                option.property("value", d.id);
+            });
+
+            //Drawing countries on the globe
+
+            var world = svg.selectAll("path.land")
+                    .data(countries)
+                    .enter().append("path")
+                    .attr("class", function (d) {
+                        var cls = "land";
+                        if (countryById[d.id] !== undefined && countryById[d.id] !== '' && _.indexOf(_.invoke($scope.country_names, 'toLowerCase'), countryById[d.id].toLowerCase()) !== -1) {
+                            cls = "land hl";
+                        }
+                        return cls;
+                    })
+                    .attr("d", path)
+
+
+                    //Drag event
+
+                    .call(d3.behavior.drag()
+                            .origin(function () {
+                                var r = projection.rotate();
+                                return {x: r[0] / sens, y: -r[1] / sens};
+                            })
+                            .on("drag", function () {
+                                var rotate = projection.rotate();
+                                projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
+                                svg.selectAll("path.land").attr("d", path);
+                                //svg.selectAll(".focused").classed("focused", focused = false);
+                            }))
+
+
+                    //Mouse events
+
+                    .on("mouseover", function (d) {
+                        countryTooltip.text(countryById[d.id])
+                                .style("left", (d3.event.pageX + 7) + "px")
+                                .style("top", (d3.event.pageY - 15) + "px")
+                                .style("display", "block")
+                                .style("opacity", 1);
+                    })
+                    .on("mouseout", function (d) {
+                        countryTooltip.style("opacity", 0)
+                                .style("display", "none");
+                    })
+                    .on("mousemove", function (d) {
+                        countryTooltip.style("left", (d3.event.pageX + 7) + "px")
+                                .style("top", (d3.event.pageY - 15) + "px");
+                    });
+
+            //Country focus on option select
+            svg.selectAll("path.water")
+
+                    //Drag event
+
+                    .call(d3.behavior.drag()
+                            .origin(function () {
+                                var r = projection.rotate();
+                                return {x: r[0] / sens, y: -r[1] / sens};
+                            })
+                            .on("drag", function () {
+                                var rotate = projection.rotate();
+                                projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
+                                svg.selectAll("path.land").attr("d", path);
+                                //svg.selectAll(".focused").classed("focused", focused = false);
+                            }));
+
+
+            svg.selectAll("path.hl").on("click", function (d) {
+
+                var countryName = countryById[d.id];
+
+                if (countryName !== undefined && countryName !== '') {
+                    var acn = _.indexOf(_.invoke($scope.country_names, 'toLowerCase'), countryName.toLowerCase());
+
+                    var sCountry = _.findWhere($scope.sCountries.countryObjects, {'countryName': $scope.country_names[acn]});
+                    if (sCountry !== undefined) {
+                        $scope.selCountry(d.id);
+                        angular.element('#country_id_' + sCountry.countryId).trigger('click');
+//                        $scope.changeCountry(sCountry.countryId, true);
+//                        console.log('#country_id_' + sCountry.countryId);
+                        angular.element('#countries_list_div').animate({
+                            scrollTop: parseInt($('#country_id_' + sCountry.countryId).offset().top) - 30
+                        }, 1000);
+                    }
+                }
+            });
+
+            d3.select("select").on("change", function () {
+                $scope.selCountry(this.value);
+            });
+
+            $scope.selCountry = function (c) {
+                var rotate = projection.rotate(),
+                        focusedCountry = country(countries, c),
+                        p = d3.geo.centroid(focusedCountry);
+                svg.selectAll(".focused").classed("focused", focused = false);
+
+                //Globe rotating
+
+                (function transition() {
+                    d3.transition()
+                            .duration(2500)
+                            .tween("rotate", function () {
+                                var r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
+                                return function (t) {
+                                    projection.rotate(r(t));
+                                    svg.selectAll("path").attr("d", path)
+                                            .classed("focused", function (d, i) {
+                                                return d.id == focusedCountry.id ? focused = d : false;
+                                            });
+                                };
+                            })
+                })();
+            };
+
+            function country(cnt, sel) {
+                for (var i = 0, l = cnt.length; i < l; i++) {
+                    if (cnt[i].id == sel) {
+                        return cnt[i];
+                    }
+                }
+            }
+
+
+            $scope.countryIdByName = function (selname) {
+
+                var x;
+                for (x in countryById) {
+                    if (countryById[x].toLowerCase() === selname.toLowerCase()) {
+                        return x;
+                    }
+                }
+                return false;
+            }
+            ;
+
+            $scope.loadCountryByName = function (selname) {
+
+                var id = $scope.countryIdByName(selname);
+                if (id !== false) {
+                    $scope.selCountry(id);
+                }
+            }
+            ;
+
+
+            $scope.loadCountryByName($scope.country_names[0]);
+
+        };
+
+        $scope.changeCountry = function (country_code, noLoadMap) {
+            if (country_code !== undefined) {
+                _.map($scope.sCountries.countryObjects, function (cobj) {
+                    cobj.selected = false;
+                    if (cobj.countryId === country_code) {
+                        cobj.selected = true;
+                        $scope.sCategories.categoryObjects = _.where($scope.sCategories.categories_list, {countryId: country_code});
+                        $scope.setupCategories();
+                        if (noLoadMap !== true && $scope.loadCountryByName !== undefined) {
+                            $scope.loadCountryByName(cobj.countryName);
+                        }
+
+                    }
+                });
+            }
+        };
+
+        $scope.changeCountry($scope.sCountries.countryObjects[0].countryId);
+    };
+});
+    </script>
+</body>
+<div ng-controller="MainCtrl" ng-init="initStuff()" class="msglobe wow fadeInDown" style="width: 500px; height: 500px; border:1px solid red;"></div>
+</html>
