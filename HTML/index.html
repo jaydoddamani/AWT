@@ -3,51 +3,13 @@
 <head>
 	<title>Welcome</title>
 	<!-- -------------------------------Maps-------------------------------- -->
-	<link rel="stylesheet" media="all" href="globe/jquery-jvectormap.css"/>
-  <script src="globe/assets/jquery-1.8.2.js"></script>
-  <script src="globe/jquery-jvectormap.js"></script>
-  <script src="globe/lib/jquery-mousewheel.js"></script>
+	<link rel="stylesheet" href="globe/jquery-jvectormap.css" type="text/css" media="screen"/>
+	<script src="globe/jquery.js"></script>
+  	<script src="globe/jquery-jvectormap.min.js"></script>
+  	<script src="globe/jquery-jvectormap-world-mill.js"></script>
 
-  <script src="globe/src/jvectormap.js"></script>
 
-  <script src="globe/src/abstract-element.js"></script>
-  <script src="globe/src/abstract-canvas-element.js"></script>
-  <script src="globe/src/abstract-shape-element.js"></script>
-
-  <script src="globe/src/svg-element.js"></script>
-  <script src="globe/src/svg-group-element.js"></script>
-  <script src="globe/src/svg-canvas-element.js"></script>
-  <script src="globe/src/svg-shape-element.js"></script>
-  <script src="globe/src/svg-path-element.js"></script>
-  <script src="globe/src/svg-circle-element.js"></script>
-  <script src="globe/src/svg-image-element.js"></script>
-  <script src="globe/src/svg-text-element.js"></script>
-
-  <script src="globe/src/vml-element.js"></script>
-  <script src="globe/src/vml-group-element.js"></script>
-  <script src="globe/src/vml-canvas-element.js"></script>
-  <script src="globe/src/vml-shape-element.js"></script>
-  <script src="globe/src/vml-path-element.js"></script>
-  <script src="globe/src/vml-circle-element.js"></script>
-  <script src="globe/src/vml-image-element.js"></script>
-
-  <script src="globe/src/map-object.js"></script>
-  <script src="globe/src/region.js"></script>
-  <script src="globe/src/marker.js"></script>
-
-  <script src="globe/src/vector-canvas.js"></script>
-  <script src="globe/src/simple-scale.js"></script>
-  <script src="globe/src/ordinal-scale.js"></script>
-  <script src="globe/src/numeric-scale.js"></script>
-  <script src="globe/src/color-scale.js"></script>
-  <script src="globe/src/legend.js"></script>
-  <script src="globe/src/data-series.js"></script>
-  <script src="globe/src/proj.js"></script>
-  <script src="globe/src/map.js"></script>
-
-  <script src="globe/assets/jquery-jvectormap-world-mill-en.js"></script>
-  <script src="js/scripts.js"></script>
- <!--  ----------------------------------------------------- -->
+ 	<!--  ----------------------------------------------------- -->
 	<link rel="stylesheet" href=".\font-awesome\css\font-awesome.min.css">
 	<style type="text/css">
     body, h1,h6{
@@ -351,10 +313,10 @@
 				<div class="ltable">
 			        <div class="btn-group" id="myDIV1">
 			        	<p id="topth">Countries</p>
-			        	<button class="button1"  id="focus-IN" onclick="myFunctionIN()"><i class="fa fa-globe" id="ggrn" aria-hidden="true"></i> India</button>
-						<button class="button1" id="focus-single" onclick="myFunctionUN()"><i class="fa fa-globe" id="gred" aria-hidden="true"></i> USA</button>
-						<button class="button1" id="focus-FR" onclick="myFunctionFN()"><i class="fa fa-globe" id="gblack" aria-hidden="true"></i> France</button>
-						<button class="button1" id="focus-AU" onclick="myFunctionFN()"><i class="fa fa-globe" id="gblack" aria-hidden="true"></i> Australia</button>
+			        	<button class="button1" onclick="myFunctionIN()"><i class="fa fa-globe" id="ggrn" aria-hidden="true"></i> India</button>
+						<button class="button1"  onclick="myFunctionUN()"><i class="fa fa-globe" id="gred" aria-hidden="true"></i> USA</button>
+						<button class="button1"  onclick="myFunctionFN()"><i class="fa fa-globe" id="gblack" aria-hidden="true"></i> France</button>
+						<button class="button1"  onclick="myFunctionFN()"><i class="fa fa-globe" id="gblack" aria-hidden="true"></i> Australia</button>
 						
 						<div id="btt">
 							<i class="fa fa-globe" id="ggrn" aria-hidden="true"> </i> Positive
@@ -368,8 +330,8 @@
 
 				<div align="center">
 					<!-- <img src="Picture1.jpg" id="cglob" align="center"> -->
-					<canvas id="sphere" width="400" height="400">	</canvas>
-					<div id="map1" style="width: 600px; height: 400px; padding-left: 50px;"></div>
+					<!-- <canvas id="sphere" width="400" height="400">	</canvas> -->
+					 <div id="world-map" style="width: 600px; height: 400px;padding-left: 50px;"></div>
 				</div>
 		  	</div>
 		  	<div class="col-2">
@@ -404,7 +366,7 @@
 }
 </script>
 
-<!-- --------------------------------------------- -->
+
 <script>
 	function myFunctionIN(){
 		myShow();
@@ -437,5 +399,38 @@
 	<div class="fixed-footer">
 		<span>Copyright &copy;Paexskin Solutions Pvt Ltd</span>
     </div>
+
+<!-- ------------------------ map ------------------------ -->
+	<script>
+    $(function(){
+      $('#world-map').vectorMap({
+        map: 'world_mill',
+        backgroundColor: 'transparent',
+        
+        regionStyle:(
+            {
+              initial: {
+                fill: '#808080',
+                'fill-opacity': 1,
+                stroke: 'none',
+                'stroke-width': 0,
+                'stroke-opacity': 1
+              },
+              hover: {
+                'fill-opacity': 0.8,
+                cursor: 'pointer'
+              },
+              selected: {
+                fill: 'yellow'
+              },
+              selectedHover: {
+              }
+            }
+        ),
+      });
+    });
+  </script>
+<!-- --------------------------------------------- -->
+
 </body>
 </html>
