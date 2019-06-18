@@ -92,47 +92,6 @@
     	width: 99%;
    		text-align: right;
     }
-    /*.fix-foot{
-		    	top: 10px;
-		    	margin-top: 10px;
-		        
-		        font-size: 13px;
-		        margin-bottom: 5px;
-		        margin-top: 5px;
-		        margin-right:45px;
-		    	padding-top: 50px;
-    }*/
-    /*.sidenav {
-	  width: 380px;
-	  position: fixed;
-	  z-index: 1;
-	  top: 200px;
-	  left: 40px;
-	  overflow-x: hidden;
-	  padding: 8px 0;
-	}
-	table {
-	  border-collapse: collapse;
-	  width: 240px;
-	}
-	table,td{
-		
-		border: 1px solid #6699ff;
-	}
-	th{
-		background-color: #6699ff;
-	}*/
-
-	/*.rt{
-		width: 380px;
-	  	position: fixed;
-	  	z-index: 1;
-	  	top: 200px;
-	 	left: 40px;
-	  	overflow-x: hidden;
-	  	padding: 8px 0;
-	}*/
-/*----------------------------------------------------------*/
     .grid-container {
     	margin-top: 50px;
  	 	display:grid;
@@ -332,8 +291,9 @@
 	#cglob{
 		width: 350px;
 	}
-}
-	</style>
+}	
+</style>
+
 <script src="Stats.js"></script>
 <script src="requestanimationframe.polyfill.js"></script>
 <script src="sphere.js"></script>
@@ -372,15 +332,6 @@
 		go();
 	}
 </script>
-		<script type="text/javascript" src="plugins/d3/d3.js"></script>
-        <script type="text/javascript" src="plugins/d3/sankey.js"></script>
-        <script type="text/javascript" src="plugins/d3/d3.chart.js"></script>
-        <script type="text/javascript" src="plugins/ng-knob/ng-knob.js"></script>
-        <script type="text/javascript" src="plugins/d3/topojson.v1.min.js"></script>
-        <script type="text/javascript" src="plugins/d3/queue.v1.min.js"></script>
-
-
-
 </head>
 <body onload="run()">
 	<div class="fixed-header">
@@ -417,8 +368,8 @@
 
 				<div align="center">
 					<!-- <img src="Picture1.jpg" id="cglob" align="center"> -->
-					<!-- <canvas id="sphere" width="400" height="400">	</canvas> -->
-					<div id="map1" style="width: 600px; height: 400px"></div>
+					<canvas id="sphere" width="400" height="400">	</canvas>
+					<div id="map1" style="width: 600px; height: 400px; padding-left: 50px;"></div>
 				</div>
 		  	</div>
 		  	<div class="col-2">
@@ -436,57 +387,10 @@
 						</div>
 			 		</div>
 			   	 </div>
-
-			   	 <!-- <div class="rtable" id="rightnav1">
-			        <div class="btn-group" id="myDIV2">
-			        	<p id="topth">Countries</p>
-						<button class="button1">
-							<i class="fa fa-globe" id="ggrn" aria-hidden="true"> </i>
-							<span id="demo1"></span> 
-						</button>
-						<button class="button1">
-							<i class="fa fa-globe" id="gred" aria-hidden="true"> </i>
-							<span id="demo2"></span> 
-						</button>
-						<button class="button1">
-							<i class="fa fa-globe" id="gblack" aria-hidden="true"> </i>
-							<span id="demo3"></span> 
-						</button>
-							
-						<div id="btt">
-								<i class="fa fa-globe" id="ggrn" aria-hidden="true"> </i> Positive
-								<i class="fa fa-globe" id="gred" aria-hidden="true"> </i> Negative
-								<i class="fa fa-globe" id="gblack" aria-hidden="true"> </i> Neutral
-						</div>
-			 		</div>
-			   	 </div> -->
-			
-
-		<!-- -------------------------------------------------------------- -->
-				<!-- <div class="rtable" id="rightnav1">
-				  		<div class="btn-group">
-				  			<p id="topth">Categories</p>
-				  			<button class="button">
-								<i class="fa fa-globe" id="ggrn" aria-hidden="true"></i><span id="demo1"></span> 
-							</button>	
-							<button class="button">
-								<i class="fa fa-globe" id="gred" aria-hidden="true"></i><span id="demo2"></span> 
-							</button>
-							<button class="button">
-								<i class="fa fa-globe" id="gblack" aria-hidden="true"></i><span id="demo3"></span> 
-							</button>
-							<div id="btt">
-									<i class="fa fa-globe" id="ggrn" aria-hidden="true"> </i> Positive
-									<i class="fa fa-globe" id="gred" aria-hidden="true"> </i> Negative	
-									<i class="fa fa-globe" id="gblack" aria-hidden="true"> </i> Neutral
-							</div>
-				  		</div>
-				</div>  -->
-			<!-- ----------------------------------RightTable------------------------- -->
 			</div>
 		</div>
 	</div>
-<script>
+<script>			//active_button
 	var header = document.getElementById("myDIV1");
 	var btns = header.getElementsByClassName("button1");
 	for (var i = 0; i < btns.length; i++) {
@@ -496,7 +400,7 @@
     		current[0].className = current[0].className.replace(" active", "");
   		}
   		this.className += " active";
-  });
+  	});
 }
 </script>
 
@@ -529,27 +433,7 @@
 		document.getElementById("demo3").setAttribute( "onClick", "location.href='skin.html'" );
 		document.getElementById("demo3").innerHTML="<i class='fa fa-globe' id='gblack' aria-hidden='true'></i> Hair-Care";
 	}
-// function myFunctionIN() {
-//   var str = "Skin Care";
-//   var result = str.link("skin.html");
-//   document.getElementById("demo1").innerHTML = result;
-
-//   var str = "Ice Creams";
-//   var result = str.link("skin.html");
-//   document.getElementById("demo2").innerHTML = result;
-
-//   var str = "Hair Care";
-//   var result = str.link("skin.html");
-//   document.getElementById("demo3").innerHTML = result;
-// }
 </script>
-
-
-<!-- ----------------------HIDE---------------------- -->
-
-<!-- ---------------------------------------------- -->
-
-
 	<div class="fixed-footer">
 		<span>Copyright &copy;Paexskin Solutions Pvt Ltd</span>
     </div>
